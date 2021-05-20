@@ -3,6 +3,11 @@ module.exports = {
     let nodemailer = require('nodemailer')
     require('dotenv').config()
 
+    if (!req.body.name || !req.body.message) {
+      res.status(400).send('Missing fields')
+      return
+    }
+
     const transporter = nodemailer.createTransport({
       port: 465,
       host: process.env.EMAIL_HOST,
@@ -17,7 +22,7 @@ module.exports = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_REC,
       subject: `Message from ${req.body.name}`,
-      text: req.body.message,
+      text: `sender: ${req.body.email} message: ${req.body.message}`,
       html: `<div>${req.body.message}</div>`,
     }
 
@@ -29,6 +34,6 @@ module.exports = {
       }
     })
 
-    res.status(200).send()
+    res.status(200).send(mailData)
   },
 }
