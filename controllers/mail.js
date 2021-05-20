@@ -1,7 +1,6 @@
 module.exports = {
   send: async (req, res) => {
     let nodemailer = require('nodemailer')
-    require('dotenv').config()
 
     if (!req.body.name || !req.body.message) {
       res.status(400).send('Missing fields')
